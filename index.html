@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sofa AR Demo</title>
+  <!-- 8th Wall Binary Engine -->
+  <script src="xr-standalone/xr.js"></script>
+  <script src="xr-standalone/xr-slam.js"></script>
+
+  <!-- Three.js -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.150.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.150.0/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+<body style="margin:0; overflow:hidden;">
+  <script>
+    // Scene setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({antialias:true});
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Light
+    const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
+    scene.add(light);
+
+    // Load GLB furniture (sofa)
+    const loader = new THREE.GLTFLoader();
+    loader.load('sofa.glb', function(gltf) {
+      const sofa = gltf.scene;
+      sofa.scale.set(1,1,1); // আকার ঠিক করো
+      sofa.position.set(0,0,-2); // ক্যামেরার সামনে বসানো
+      scene.add(sofa);
+    });
+
+    camera.position.z = 5;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+  </html>
